@@ -34,3 +34,13 @@ https://www.youtube.com/watch?v=lxjgxh5XzY0&list=PLJwvtUqYDmA5Kp7mHIiP5KrVkovKwh
 
 ![image](https://user-images.githubusercontent.com/27693622/232930744-9778e8b4-23e8-4a36-b0af-24d5f66052c7.png)
 
+### Example
+Before Cloud(on-Prem) for Online Shopping App
+- peak usage during weekends / holidays
+- Less load during rest of time
+- higher cost of procuring infrastructure
+- needs to plan ahead
+- Dedicated server team to manage the infrastructure
+- Going global takes a lot of time
+![image](https://user-images.githubusercontent.com/27693622/232931468-459c8dbe-1e3f-42b6-9684-c7e9b2a3f601.png)
+
