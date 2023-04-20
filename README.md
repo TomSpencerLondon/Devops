@@ -162,8 +162,41 @@ The Software Development Life Cycle (SDLC) is a process used by the software ind
 These are the phases of the software development life cycle:
 ![image](https://user-images.githubusercontent.com/27693622/233507028-17f690d3-ba6b-4cdd-829c-46adbccfec9e.png)
 
+### Differences between Agile and Waterfall
+Waterfall can be described as a linear process. The process starts with requirements gathering and ends with deployment.
+Agile can be described as an iterative process. Each iteration leads to gradual improvement of the product.
 The problem with waterfall is that the business needs to wait a long time to see the value in Waterfall.
 Waterfall is more rigid and businesses cannot change requireements. Product owners are not involved during the devlopment.
 In Agile changes are allowed even after the planning is complete. Agile is iterative development where businesses can see value
 through demos of the work so far. Every story in agile is tested and delivered to product owners.
+
+Devops is about people, process and technology.
+
+### Differences between two images:
+![image](https://user-images.githubusercontent.com/27693622/233508308-28847d31-c1d0-43c9-8b22-fe751d406df5.png)
+
+![image](https://user-images.githubusercontent.com/27693622/233504961-fde76d00-0037-4dc0-8f20-a83fb84a73d7.png)
+
+In the first image there is no automation. There are also silos between development and operations. There is no feedback loop.
+There is collaboration with slack notifications. In the second diagram there are checks before pushing the code including sonarqube, jacoco and junit. There is security through artifactory
+and security scanning. The testing takes place during the deployment stage and there is a difference between deployment and release.
+In the second system we are able to fail fast and trouble shoot quickly.
+
+In the first time diagram, we see agile development with stories. The are:
+- manual builds
+- manual tests on the machine
+- manual deployments (time consuming)
+- manual code coverage
+- no feedback to production teams
+- no binary repo manager
+- manual infrastructure setup
+
+In this example, developers are siloed and are not collaborating effectively and are unable to find out what they have done wrong.
+In the first place, it is important to define the deployment plan. Take the code from inception to release.
+The main difference is during the CI/CD part of the pipeline. Each time jenkins checks the code for code quality issues. We also integrated
+with notifications such as slack. We also have a binary repo manager. We have a test environment and a production environment.
+The model followed is build once and deploy anywhere. There are quality gates for each starge to ensure that quality is upheld.
+Every time we deploy into the QA and UAT environments. The Jar file is stored on Artifactory and there is no manual build. The build
+is completed using Infrastructure as Code with Terraform and Ansible. Devops is a practice that is followed by deployment teams.
+Agile is a software development methodology.
 
