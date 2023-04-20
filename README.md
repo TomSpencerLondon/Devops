@@ -134,3 +134,6 @@ This link was useful for tomcat:
 https://www.coachdevops.com/2020/04/install-tomcat9-on-ubuntu-1804-setup.html
 
 ![image](https://user-images.githubusercontent.com/27693622/233222116-8f152de2-cd90-48f5-90f6-b32a815bdb99.png)
+
+This is the plan going forwards:
+![image](https://user-images.githubusercontent.com/27693622/233504961-fde76d00-0037-4dc0-8f20-a83fb84a73d7.png)
