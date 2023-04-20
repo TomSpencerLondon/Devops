@@ -137,3 +137,33 @@ https://www.coachdevops.com/2020/04/install-tomcat9-on-ubuntu-1804-setup.html
 
 This is the plan going forwards:
 ![image](https://user-images.githubusercontent.com/27693622/233504961-fde76d00-0037-4dc0-8f20-a83fb84a73d7.png)
+
+### Roles and responsibilities of Devops Engineer
+- Set up CICD pipeline - automate build and deployment
+- Automate infrastructure setup
+- Automate Test execution process
+- Provide continuous feedback
+
+### Top 10 Devops Tools
+https://www.coachdevops.com/2020/04/top-10-devops-popular-tools-popular.html
+1.    Terraform - # 1 Infrastructure automation tool
+2.    Git - BitBucket/GitHub/Azure Repos - # 1 - SCM tool
+3.    Jenkins, Maven, Master/Slave, Pipelines - scripted, declarative, multi branch - # 1 CI tool
+4.    Docker - #1 Container platform
+5.    Kubernetes - #1 container orchestration tool
+6.    Ansible- #1 Configuration Management tool
+7.    Azure DevOps – Microsoft platform for migrating applications to Azure Cloud
+8.    SonarQube – #1 Code quality tool
+9.    Slack - #1 Collaboration tool
+10.  Nexus - #2 Binary repo manager 
+
+### What is SDLC?
+The Software Development Life Cycle (SDLC) is a process used by the software industry to design, develop and test high quality software. The SDLC aims to produce a high-quality software that meets or exceeds customer expectations, reaches completion within times and cost estimates.
+These are the phases of the software development life cycle:
+![image](https://user-images.githubusercontent.com/27693622/233507028-17f690d3-ba6b-4cdd-829c-46adbccfec9e.png)
+
+The problem with waterfall is that the business needs to wait a long time to see the value in Waterfall.
+Waterfall is more rigid and businesses cannot change requireements. Product owners are not involved during the devlopment.
+In Agile changes are allowed even after the planning is complete. Agile is iterative development where businesses can see value
+through demos of the work so far. Every story in agile is tested and delivered to product owners.
+
