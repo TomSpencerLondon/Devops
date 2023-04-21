@@ -143,6 +143,7 @@ This is the plan going forwards:
 - Automate infrastructure setup
 - Automate Test execution process
 - Provide continuous feedback
+- Devops Engineers should also understand how developers work and collaborate
 
 ### Top 10 Devops Tools
 https://www.coachdevops.com/2020/04/top-10-devops-popular-tools-popular.html
@@ -182,7 +183,7 @@ There is collaboration with slack notifications. In the second diagram there are
 and security scanning. The testing takes place during the deployment stage and there is a difference between deployment and release.
 In the second system we are able to fail fast and trouble shoot quickly.
 
-In the first time diagram, we see agile development with stories. The are:
+In the first time diagram, we see agile development with stories. There are:
 - manual builds
 - manual tests on the machine
 - manual deployments (time consuming)
@@ -198,5 +199,20 @@ with notifications such as slack. We also have a binary repo manager. We have a 
 The model followed is build once and deploy anywhere. There are quality gates for each starge to ensure that quality is upheld.
 Every time we deploy into the QA and UAT environments. The Jar file is stored on Artifactory and there is no manual build. The build
 is completed using Infrastructure as Code with Terraform and Ansible. Devops is a practice that is followed by deployment teams.
-Agile is a software development methodology.
+Agile is a software development methodology. Agile closes the gap between business and developers and devops closes the gap between developers
+and operations. 
+
+Continuous Integration - Find bugs early in the software development stage
+Continuous Delivery - Deploy code to production environment (build once and deploy anywhere) - fixed release by May 25
+Continuous Deployment - Everything is automated - as soon as developer makes change it is deployed to production
+
+### What does Faster to market mean?
+Agile with Devops can help to reduce the time to market. It helps move the product to the market place quickly.
+Build and packaging is when devops is most useful. With a brand new product how is devops useful? 80% of application is already in production.
+Difficult to automate the process. Many not 50% unit test coverage. It is easier for devops to implement a green field project.
+
+
+
+
+
 
