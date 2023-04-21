@@ -211,8 +211,67 @@ Agile with Devops can help to reduce the time to market. It helps move the produ
 Build and packaging is when devops is most useful. With a brand new product how is devops useful? 80% of application is already in production.
 Difficult to automate the process. Many not 50% unit test coverage. It is easier for devops to implement a green field project.
 
+### Why Devops?
+- Business value
+  - faster time to market
+  - continuous software delivery
+  - better quality due to automation
+  - improved performance
+  - reduced outages - shorter lead times
+  - better products
+- Technical value:
+  - communication between teams
+  - faster resolution of problems
+  - increased productivity - more time available to add value (rather than fix / maintain)
+  - Infrastructure as code - environment is provisioned through code rather than manually
 
+### Devops paradigms
+1. Source code management
+2. Continuous integration
+3. Continuous delivery
+4. Infrastructure As Code
+5. Continuous Deployment
+6. Code Quality tools integration
+7. Monitoring
+8. Microservices and Containerization
+9. Container Orchestration
 
+![image](https://user-images.githubusercontent.com/27693622/233512776-3b501018-2408-440b-a9f2-7632992c700e.png)
 
+Being good at just the first three can help get a job: git, jenkins, terraform.
 
+These are the tools we will learn:
+- Git, Github, Bitbucket, Azure Repos - Source code management
+- Maven - build tools for java apps
+- MSBuild - build tool for .NET
+- Jenkins, Azure Devops - Continuous Integration tool
+- SonarQube, Jacoco, Corbetura - Code quality tools
+- Jira, Azure Board - project management tool
+- Nexus, Artifactory - Binary repo manager
+- Terraform, Ansible, Puppet, Chef - infrastructure automation tools
+- Slack,, microsoft teams - collaboration tool
+- Docker, Kubernetes - containerization and orchestration tools
+- AWS, Azure, GCP - Cloud platforms
+- Scripting - Groovy (pipelines), Playbooks YAML (Ansible), JSON (Terraform), Manifests (Puppet)
+- AWS ECR, Azure Container Registry, DockerHub, Nexus - Container registries
+- Prometheus and Grafana - Monitoring tools (New)
 
+![image](https://user-images.githubusercontent.com/27693622/233513966-f587f649-267e-485e-80e1-c7314eed1303.png)
+
+Sonarlint plugin locally runs the Sonarqube analysis on your code. It is a static code analysis tool. It is a plugin for eclipse and intellij.
+This is quite useful for the rules on sonarqube:
+https://rules.sonarsource.com/java/RSPEC-3252
+
+![image](https://user-images.githubusercontent.com/27693622/233514223-23134295-62fd-42de-b883-a914e4206468.png)
+
+Fortify is a security tool. Snyk is another vulnerability scanner. It is a tool that scans the code for vulnerabilities.
+As a devops engineer the CyberSecurity team would be responsible for the product. Dynatrace is the responsibility of the monitoring team.
+The Devops team is responsible for invoking the applications.
+
+### Tools integration
+How would we move from no automation to full cicd. First we need to set up an overview of the process.
+We would then set up Jenkins and SonarQube. We would then set up Nexus to set up Artifactory. We would then slowly scale up. We
+start with CI / CD, container management. 
+
+Prospective employers will ask for you to show your github repositories. Project work is important.
+We will take a problem and address that problem. When set up git bash. 
