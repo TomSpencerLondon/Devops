@@ -275,3 +275,28 @@ start with CI / CD, container management.
 
 Prospective employers will ask for you to show your github repositories. Project work is important.
 We will take a problem and address that problem. When set up git bash. 
+
+### Lab 2 - Create Java Web App using MAven and Setup Java WebApp in Github repo
+This link is useful for scm:
+https://www.cidevops.com/2020/03/what-is-source-code-management-what-is.html
+
+This link is useful for setting up a Java project in Github:
+https://www.coachdevops.com/2019/05/setup-repo-and-create-java-project-in.html
+
+This is the github account that I have setup:
+https://github.com/TomSpencerLondon/MyApplicationRepo
+
+![image](https://user-images.githubusercontent.com/27693622/233873695-cf93b59f-aa10-4a74-9695-d9c6ee4f6e24.png)
+
+### Lab 3 - CICD - Automate Build and Deployment of Java Web App using Jenkins Free Style job
+
+We can use the steps for configuring Jenkins to automate build and deployment for the Java WebApp we already set up in GitHub using lab 2 earlier.
+
+This link is useful for automating Builds and Deployments using Jenkins:
+https://www.coachdevops.com/2019/02/create-build-job-in-jenkins-how-to.html
+
+### Lab 4 - How to configure Webhooks in GitHub to trigger builds instantly in Jenkins?
+
+This is to configure Webhooks in GitHub which will trigger Jenkins jobs immediately for every code check-in by the developers.
+This link is useful for configuring Webhooks in GitHub:
+https://www.cidevops.com/2019/02/how-to-create-webhooks-in-github-and.html
