@@ -300,3 +300,43 @@ https://www.coachdevops.com/2019/02/create-build-job-in-jenkins-how-to.html
 This is to configure Webhooks in GitHub which will trigger Jenkins jobs immediately for every code check-in by the developers.
 This link is useful for configuring Webhooks in GitHub:
 https://www.cidevops.com/2019/02/how-to-create-webhooks-in-github-and.html
+
+### Traditional old flow of software development
+1. Manual Builds
+2. Manual unit tests execution
+3. Manual deployments
+4. Manual code quality checks
+5. Manual code coverage
+6. No feedback to prod teams
+7. No binary repo management
+8. Manual Infrastructure setup
+
+### Milestones
+1. Automated builds
+2. Automated unit tests execution
+3. Automated code quality checks
+4. Automated security checks
+5. Automated code coverage
+6. Automated deployments
+7. Automated feedback to prod teams
+8. Automated binary repo management
+9. Automated Infrastructure setup
+
+Jenkins is the best tool for CI / CD. Jenkins is a CI / CD tool. It is a server that runs in the background. It is a java application.
+In lab 0 we created two ec2 instances. One is the Jenkins server and the other is a tomcat server.
+
+This is a reminder of the CI/CD process
+![image](https://user-images.githubusercontent.com/27693622/235010288-a584f159-a364-4e8e-a4fe-3194faae6710.png)
+
+We will automate build, deployment and code coverage with jacoco. We will use a maven structure.
+Maven gives us a project directory structure. We will use a maven project structure. We will use a maven project structure.
+This link is useful for maven project structure:
+https://www.cidevops.com/2020/03/what-is-maven-why-we-need-maven.html
+
+![image](https://user-images.githubusercontent.com/27693622/235010924-84eac1cf-3376-4f9b-89b5-e87977f65dcc.png)
+
+![image](https://user-images.githubusercontent.com/27693622/235010971-d0964747-beb5-450d-b0af-65bac2d368bb.png)
+
+
+There are four ways of triggering build jobs in Jenkins:
+![image](https://user-images.githubusercontent.com/27693622/235012292-8f1f57d3-ce8c-471f-a8fc-67bf435eca0e.png)
