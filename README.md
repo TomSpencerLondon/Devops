@@ -355,3 +355,92 @@ We just changed an exclamation mark on Howdy Folks but this has been reflected o
 
 ![image](https://user-images.githubusercontent.com/27693622/236158207-4221fa66-ee58-4fda-bf2d-a944701e8d36.png)
 
+### Lab 6 - Code Quality - How to setup SonarQube and Integrate with Jenkins
+SonarQube is a static code quality/analysis tool which will scan application source code and find defects/issues in the code.
+This link is useful for setting up sonarqube using docker:
+https://www.coachdevops.com/2021/12/install-sonarqube-using-docker-install.html
+All the code is directly added to the sonarqube server. We can then see the code quality issues.
+I set the username and password as:
+admin
+password
+
+The sonarqube ui is up and running:
+![image](https://user-images.githubusercontent.com/27693622/236159826-89702e63-46e7-4d63-9d6e-d420f4b63096.png)
+We now need to integrate sonarqube with jenkins. This link is useful for sonarqube Jenkins integration:
+https://www.coachdevops.com/2020/04/how-to-integrate-sonarqube-with-jenkins.html
+
+![image](https://user-images.githubusercontent.com/27693622/236160712-2f09f232-905c-4d46-8a4b-d6669241ca6a.png)
+
+I also added the Sonarqube credentials:
+![image](https://user-images.githubusercontent.com/27693622/236162134-848634ad-74c6-4592-8bd7-4968afba6e64.png)
+
+When we push to github, we can see the sonarqube analysis:
+![image](https://user-images.githubusercontent.com/27693622/236166286-680cd3b8-b1c0-4b35-9280-9c75891b3af8.png)
+
+### Lab 7 - Nexus 3 Setup using Docker Compose and Integrate Nexus with Jenkins
+Nexus is a Binary repository manager that is used for storing binaries (build output ). We will eventually integrate Nexus with Jenkins for uploading binaries files.
+This link is useful to explain why binary repository managers are needed:
+https://jfrog.com/whitepaper/devops-8-reasons-for-devops-to-use-a-binary-repository-manager/
+
+We can either use nexus or artifactory as binary repo managers. Here we will use nexus.
+In order to setup nexus we need to do the following:
+- Create an EC2 instance with t2.medium (4 GB RAM)
+- Make sure we open port 8081 in the AWS security group.
+This link is useful for setting up nexus using docker:
+  https://www.coachdevops.com/2022/01/install-sonatype-nexus-3-using-docker.html
+
+We first add the EC2 instance:
+- Ubuntu EC2 up and running with at least t2.medium(4GB RAM), 2GB will not work
+- Port 8081, 8085 is opened in security firewall rule
+- instance should have docker and docker-compose installed
+
+These are the commands for setting up docker:
+```bash
+sudo hostnamectl set-hostname Nexus
+sudo apt-get update
+sudo apt-get install docker-compose -y
+sudo usermod -aG docker $USER
+sudo vi docker-compose.yml 
+```
+This is the docker-compose.yml file:
+```yaml
+version: "3"
+services:
+  nexus:
+    image: sonatype/nexus3
+    restart: always
+    volumes:
+      - "nexus-data:/sonatype-work"
+    ports:
+      - "8081:8081"
+      - "8085:8085"
+
+volumes:
+  nexus-data: {}
+```
+
+We then run the following commands:
+```bash
+sudo docker-compose up -d 
+sudo docker-compose logs --follow
+```
+We need to add the nexus password for authentication when we integrate with jenkins:
+```bash
+sudo docker exec -it ubuntu_nexus_1 cat /nexus-data/admin.password
+```
+
+This is the set up with Nexus:
+
+![image](https://user-images.githubusercontent.com/27693622/236197756-9b02270e-d5ed-4dc3-8f96-ca8bb3d98715.png)
+
+This link is useful for integration with Jenkins:
+https://www.cidevops.com/2018/06/jenkins-nexus-integration-how-to.html
+
+This is the nexus configuration:
+![image](https://user-images.githubusercontent.com/27693622/236198021-2546a8c7-6ae4-4b4b-b570-aba591197963.png)
+
+We also have to add a nexus credential in Jenkins:
+![image](https://user-images.githubusercontent.com/27693622/236198205-28cbac32-9637-4a2c-b920-45a34d196678.png)
+
+
+
