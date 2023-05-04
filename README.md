@@ -345,5 +345,13 @@ There are four ways of triggering build jobs in Jenkins:
 In this exercise we want to make a code change to ensure Jenkins has started automated builds/deployments instantly.
 https://www.cidevops.com/2020/02/how-to-push-code-change-into-github.html
 
+We are using this repository for connection with jenkins:
+https://github.com/TomSpencerLondon/MyApplicationRepo
+
 We can then refresh the browser and click on Source to see the code changes you made in our git bash window. 
 Now after making this code change, if we have web hooks configured correctly, it should have triggered build in Jenkins instantly.
+
+We just changed an exclamation mark on Howdy Folks but this has been reflected on our application which we have deployed to the Tomcat instance:
+
+![image](https://user-images.githubusercontent.com/27693622/236158207-4221fa66-ee58-4fda-bf2d-a944701e8d36.png)
+
