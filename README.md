@@ -340,3 +340,10 @@ https://www.cidevops.com/2020/03/what-is-maven-why-we-need-maven.html
 
 There are four ways of triggering build jobs in Jenkins:
 ![image](https://user-images.githubusercontent.com/27693622/235012292-8f1f57d3-ce8c-471f-a8fc-67bf435eca0e.png)
+
+### Lab 5 - How to make code changes to trigger Jenkins builds instantly
+In this exercise we want to make a code change to ensure Jenkins has started automated builds/deployments instantly.
+https://www.cidevops.com/2020/02/how-to-push-code-change-into-github.html
+
+We can then refresh the browser and click on Source to see the code changes you made in our git bash window. 
+Now after making this code change, if we have web hooks configured correctly, it should have triggered build in Jenkins instantly.
