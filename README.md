@@ -67,7 +67,7 @@ These are some advantages of using cloud computing:
 12. Sustainability
 
 Other advantages of cloud computing could include provisioning resources on demand (Elasticity).
-Better resource utilization and no upfront cost. You can stop spending money to maintain a data center
+Better resource utilization and no upfront cost. We can stop spending money to maintain a data center
 and go global in minutes. There is no need of a dedicated server team to manage the infrastructure.
 
 This video is good for cloud migration:
@@ -443,4 +443,89 @@ We also have to add a nexus credential in Jenkins:
 ![image](https://user-images.githubusercontent.com/27693622/236198205-28cbac32-9637-4a2c-b920-45a34d196678.png)
 
 
+### Bonus Labs
+These bonus labs are for ensuring that we can duplicate the deploy steps that we followed above on different environments.
+
+#### Bonus Lab Exercise 1 - Create Java Web App using Maven & setup in Bitbucket
+This link is a useful overview of version control systems:
+https://www.cidevops.com/2020/03/what-is-source-code-management-what-is.html
+
+We need to set up our bitbucket account at bitbucket.org. This link is useful for setting up ssh keys in bitbucket:
+https://www.coachdevops.com/2019/09/how-to-setup-ssh-keys-in-bitbucket-and.html
+
+#### Bonus Lab Exercise 2 - CICD - Automate Build and Deployments of Java WebApp from BitBucket using Jenkins
+
+We have now added our WebApp to Bitbucket. I have also started the Jenkins and Tomcat EC2 instances on AWS.
+
+We then add the configuration to Jenkins for pulling from the Bitbucket repository:
+![image](https://user-images.githubusercontent.com/27693622/236209533-f03de510-2308-4d55-aecb-2f1b318dc31a.png)
+
+For the above configuration I used the private key from the Jenkins EC2 instance and then added the public key to Bitbucket.
+
+#### Bonus Lab Exercise 3 - How to configure webhooks in BitBucket to trigger Jenkins jobs instantly?
+This link is useful on webhooks with Bitbucket:
+https://www.coachdevops.com/2020/06/how-to-configure-webhooks-in-bitbucket.html
+
+Webhooks are used to trigger Jenkins jobs when a change is made to the Bitbucket repository. This link is useful for setting up webhooks in Bitbucket:
+
+![image](https://user-images.githubusercontent.com/27693622/236212154-5c5e0dfb-c702-4bfa-8cf3-c30df5cb4c71.png)
+
+### Lab Exercise 8 - How to send push notifications to Slack from Jenkins (Continuous Feedback)
+
+In this section we will look at integrating Slack with Jenkins for sending Push notifications after build in Jenkins.
+Slack is a collaboration tool which agile teams use to communicate and collaborate. Slack can be integrated with Jenkins.
+
+This link is useful for setting up Slack with Jenkins:
+https://www.cidevops.com/2018/05/jenkins-slack-integration-jenkins-push.html
+
+![image](https://user-images.githubusercontent.com/27693622/236219222-c5485fc8-33ad-41d5-bb92-5bc5c046a34a.png)
+
+### Lab Exercise 9 - How to Trigger a Jenkins build Job from a Slack channel
+We will now look at invoking a Jenkins Job from a Slack Channel.
+This link is useful for setting up slack jenkins integration with build command:
+https://www.coachdevops.com/2020/04/trigger-jenkins-job-from-slack-how-to.html
+
+![image](https://user-images.githubusercontent.com/27693622/236223140-17a11c67-ba8c-46c7-a25e-b7e7d2a579c7.png)
+
+### Lab Exercise 10 - Configure Jenkins Build Agents for Distributing loads
+
+We will now work on using a build agent to help Jenkins achieve distributed builds.
+This link is useful for setting up build agents:
+https://www.coachdevops.com/2021/06/jenkins-build-agent-setup-how-to-setup.html
+
+The advantages of the master build agent model are:
+- distributed builds
+- faster throughput
+- quicker feedback
+- scalable architecture
+
+![image](https://user-images.githubusercontent.com/27693622/236227028-90823826-b63e-4a4b-bd10-763ccd0bee75.png)
+
+#### Jenkins Controller
+The main Jenkins server is the master. The Master's job is to handle:
+- scheduling build jobs
+- dispatching builds to the slaves for the actual execution
+- Monitoring the slaves - possibly taking them online and offline as required
+- Recording and presenting the build results
+- A master instance of Jenkins can also execute build jobs directly
+
+#### Jenkins Agent
+A slave is a Java executable that runs on a remote machine. These are the characteristics of Jenkins slaves:
+- Slaves hear requests from the master for build executors
+- Slaves can run on a variety of operating systems
+- The slave follows the master commands. For Jenkins this involves executing build jobs dispatched by the Master
+- We can configure a project to always run on a particular Slave machine or a particular type of Slave machine or simply let Jenkins pick the next available Slave.
+
+The Jenkins Master uses SSH keys to communicate with the slave. We need to create ssh keys in Jenkins agent by executing:
+```bash
+ssh-keygen
+```
+We then add the public key to the authorized_keys file in .ssh and add the private key to the Jenkins credentials.
+We then use the credentials to create the agent:
+![image](https://user-images.githubusercontent.com/27693622/236422470-3a4dc27b-5d28-476c-b249-d0e2b9821d04.png)
+
+
+The agent is then able to authorize the controller connection:
+
+![image](https://user-images.githubusercontent.com/27693622/236422283-93031e77-0066-4994-8b2e-73adc08e21ef.png)
 
