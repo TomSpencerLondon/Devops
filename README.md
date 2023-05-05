@@ -529,3 +529,22 @@ The agent is then able to authorize the controller connection:
 
 ![image](https://user-images.githubusercontent.com/27693622/236422283-93031e77-0066-4994-8b2e-73adc08e21ef.png)
 
+When I had an issue with ssh for ec2 I used this command:
+```bash
+sudo chown -R ubuntu:ubuntu .ssh
+```
+This may have been related to some issues I was having with ssh keys for controller and agent connection.
+This link is useful for setting up ssh keys for ec2:
+https://askubuntu.com/questions/311558/ssh-permission-denied-publickey
+
+```text
+Sometimes the issue comes from permissions and ownership. For instance, if you want to log in as root, /root, .ssh and authorized_keys must belong to root. Otherwise, sshd won't be able to read them and therefore won't be able to tell if the user is authorized to log in.
+
+In your home directory:
+
+chown -R your_user:your_user .ssh
+As for rights, go with 700 for .ssh and 600 for authorized_keys
+
+chmod 700 .ssh
+chmod 600 .ssh/authorized_keys
+```
