@@ -548,3 +548,191 @@ As for rights, go with 700 for .ssh and 600 for authorized_keys
 chmod 700 .ssh
 chmod 600 .ssh/authorized_keys
 ```
+
+### Lab Exercise 11 - Create Scripted Pipeline in Jenkins for Automating Builds, Deployments and Code quality checks
+We are now going to learn how to implement CI/CD using Jenkins pipelines. Pipelines are better than freestyle jobs because
+you can use pipelines to write a lot of complex tasks when compared to Freestyle jobs. We can also see how long each stage takes
+to execute so that we have more control compared to freestyle.
+
+The Jenkins pipeline is written in a groovy based script that has a set of plug-ins integrated for automating build, deployment
+and test execution. The pipeline defines the build process which typically includes stges for building an application, testing the application
+and then deploying it. We can use the script generator to generate pipeline code for stages we don't know how to write in groovy code.
+Pipelines can be categorised into two groups:
+- scripted pipelines
+- declarative pipelines
+
+#### Scripted pipelines
+Scripted piepelines are defined in node blocks:
+
+```yaml
+
+nods {
+  stage('Build') {
+    echo 'Building...'
+  }
+  stage('Test') {
+    echo 'Testing...'
+  }
+  stage('Deploy') {
+    echo 'Deploying...'
+  }
+}
+```
+
+#### Declarative pipelines
+Declarative pipeline can be checked in as part of source control management. The code is defined in a pipeline block
+and each stage can be executed in parallel in multiple build agents (Slaves):
+
+```groovy
+pipeline {
+  agent { label 'slave-node' }
+  stages {
+    stage('checkout') {
+      steps {
+        git 'https://bitbucket.org/myrepo'
+      }
+    }
+  
+    stage('build') {
+      tools {
+        gradle 'Maven3'
+      }
+      steps {
+        steps {
+          sh 'mvn clean test'
+        }
+      }
+    }
+  }
+}
+```
+
+### Our own scripted pipeline
+We will now create our own scripted pipeline. We already have an EC2 instance on which we have deployed our Jenkins server.
+A good tip is to start and stop the server as required as this means that we don't lose our configuration. We also need the following
+plugins which can be installed from the Jenkins plugin page:
+- slack
+- jacoco
+- nexus artifact uploader
+- sonarqube
+
+Next we create a new item as a pipeline job and name it MySecondPipelineJob. We can then use the pipeline syntax
+generator to create our first pipeline script to download our code from github:
+![image](https://user-images.githubusercontent.com/27693622/236798443-c44d2239-ee3f-4e78-b46a-77550a13947e.png)
+
+We can then use this syntax to configure our pipeline:
+![image](https://user-images.githubusercontent.com/27693622/236799963-f6cf387a-c78d-43a9-8dab-a365b0fb426a.png)
+
+We have now successfully checked out the code from github:
+![image](https://user-images.githubusercontent.com/27693622/236800163-fbce3e72-a2fd-442f-9f58-965667612ecc.png)
+
+Next we will configure our build and code quality scan:
+
+```groovy
+node {
+    def mvnHome = tool 'Maven3'
+    stage ("checkout") {
+        checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'e5ab6423-0076-44e3-aea7-c319e898302a', url: 'git@github.com:TomSpencerLondon/MyApplicationRepo.git']])
+    }
+    
+    stage('build') {
+        sh "${mvnHome}/bin/mvn clean install - f MyWebApp/pom.xml"
+    }
+    
+    stage('Code Quality scan') {
+        withSonarQubeEnv('SonarQube') {
+            sh "${mvnHome}/bin/mvn -f MyWebApp/pom.xml sonar:sonar"
+        }
+    }
+}
+```
+
+Here we have defined mvnHome to refer to the Maven3 tool that we added in Dashboard > Manage Jenkins > Tools:
+
+![image](https://user-images.githubusercontent.com/27693622/236801337-677e6c6f-16e9-468f-9bd4-061b8773c0b8.png)
+
+
+We now add the rest of our configuration:
+```groovy
+node {
+
+    def mvnHome = tool 'Maven3'
+    stage ("checkout")  {
+       copy code here which you generated from step #6
+    }
+
+   stage ('build')  {
+    sh "${mvnHome}/bin/mvn clean install -f MyWebApp/pom.xml"
+    }
+
+     stage ('Code Quality scan')  {
+       withSonarQubeEnv('SonarQube') {
+       sh "${mvnHome}/bin/mvn -f MyWebApp/pom.xml sonar:sonar"
+        }
+   }
+  
+   stage ('Code coverage')  {
+       jacoco()
+   }
+
+   stage ('Nexus upload')  {
+        nexusArtifactUploader(
+        nexusVersion: 'nexus3',
+        protocol: 'http',
+        nexusUrl: 'nexus_url:8081',
+        groupId: 'myGroupId',
+        version: '1.0-SNAPSHOT',
+        repository: 'maven-snapshots',
+        credentialsId: '2c293828-9509-49b4-a6e7-77f3ceae7b39',
+        artifacts: [
+            [artifactId: 'MyWebApp',
+             classifier: '',
+             file: 'MyWebApp/target/MyWebApp.war',
+             type: 'war']
+        ]
+     )
+    }
+   
+   stage ('DEV Deploy')  {
+      echo "deploying to DEV Env "
+      deploy adapters: [tomcat9(credentialsId: '4c55fae1-a02d-4b82-ba34-d262176eeb46', path: '', url: 'http://your_tomcat_url:8080')], contextPath: null, war: '**/*.war'
+
+    }
+
+  stage ('Slack notification')  {
+    slackSend(channel:'channel-name', message: "Job is successful, here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+   }
+
+   stage ('DEV Approve')  {
+            echo "Taking approval from DEV Manager for QA Deployment"     
+            timeout(time: 7, unit: 'DAYS') {
+            input message: 'Do you approve QA Deployment?', submitter: 'admin'
+            }
+     }
+
+stage ('QA Deploy')  {
+     echo "deploying into QA Env " 
+deploy adapters: [tomcat9(credentialsId: '4c55fae1-a02d-4b82-ba34-d262176eeb46', path: '', url: 'http://your_tomcat_url:8080')], contextPath: null, war: '**/*.war'
+
+}
+  stage ('QA notify')  {
+    slackSend(channel:'channel-name', message: "QA Deployment was successful, here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+  }
+
+  stage ('QA Approve')  {
+    echo "Taking approval from QA manager"
+    timeout(time: 7, unit: 'DAYS') {
+      input message: 'Do you want to proceed to PROD Deploy?', submitter: 'admin,manager_userid'
+    }
+  }
+
+  stage ('PROD Deploy')  {
+    echo "deploying into PROD Env "
+    deploy adapters: [tomcat9(credentialsId: '4c55fae1-a02d-4b82-ba34-d262176eeb46', path: '', url: 'http://your_tomcat_url:8080')], contextPath: null, war: '**/*.war'
+
+  }
+}
+```
+
+After adding the correct urls and credentials we have a successful build:
+![image](https://user-images.githubusercontent.com/27693622/237062520-a1d8c098-2af5-42ec-b592-5b467465f7a9.png)
