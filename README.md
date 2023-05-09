@@ -608,6 +608,9 @@ pipeline {
 ```
 
 ### Our own scripted pipeline
+This link is useful for scripted pipelines:
+https://www.cidevops.com/2018/12/create-jenkins-pipeline-for-automating.html
+
 We will now create our own scripted pipeline. We already have an EC2 instance on which we have deployed our Jenkins server.
 A good tip is to start and stop the server as required as this means that we don't lose our configuration. We also need the following
 plugins which can be installed from the Jenkins plugin page:
