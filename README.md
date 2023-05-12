@@ -739,3 +739,62 @@ deploy adapters: [tomcat9(credentialsId: '4c55fae1-a02d-4b82-ba34-d262176eeb46',
 
 After adding the correct urls and credentials we have a successful build:
 ![image](https://user-images.githubusercontent.com/27693622/237062520-a1d8c098-2af5-42ec-b592-5b467465f7a9.png)
+
+### Lab 12 - Create Declarative Pipeline - Jenkinsfile to Automate builds, Deployments and Code quality checks
+This link is useful for the difference between scripted and declarative pipelines:
+https://www.cidevops.com/2019/05/jenkins-pipelines-cicd-pipelines.html
+
+
+#### Scripted pipeline
+- Scripted pipeline is traditional way of writing pipeline using groovy scripting in Jenkins UI.
+- stricter groovy syntax
+- each stage can not be executed in parallel in multiple build agents(Slaves) that easily.
+- Code is defined within a node block
+
+```groovy
+// Scripted pipeline
+node {
+    stage('Build') {
+        echo 'Building....'
+    }
+    stage('Test') {
+        echo 'Building....'
+    }
+    stage('Deploy') {
+        echo 'Deploying....'
+    }
+}
+```
+
+#### Declarative Pipeline (Jenkinsfile)
+
+- New feature added to Jenkins where you create a Jenkinsfile and check in as part of SCM such as Git.
+- simpler groovy syntax
+- Code is defined within a 'pipeline' block
+- each stage can be executed in parallel in multiple build agents(Slaves)
+
+```groovy
+// Declarative pipeline
+pipeline {
+    agent { label 'slave-node' }
+    stages {
+        stage('checkout') {
+            steps {
+                git 'https://bitbucket.org/myrepo'
+            }
+        }
+        stage('build') {
+            tools {
+                gradle 'Maven3'
+            }
+            steps {
+                sh 'mvn clean test'
+            }
+        }
+    }
+}
+
+```
+
+
+
