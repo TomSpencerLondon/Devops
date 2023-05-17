@@ -796,5 +796,164 @@ pipeline {
 
 ```
 
+### Lab Exercise 13 - Implement CICD - Setup Multi branch Pipeline Job in Jenkins
+
+We will now set up a multibranch pipeline job in Jenkins.
+
+#### What is a multibranch pipline?
+For multibranch pipeliens we automatically create new pipelines for every Git branch in source version control.
+This enables different pipeline implementations for every branch. For instance we may want to have CICD pipeline for
+the master branch and only CI pipeline for the develop branch. We will automatically discover new branches in source control
+and automatically create a pipeline for that branch.
+
+#### How to configure webhooks in Multibranch pipeline
+
+First we add multibranch scan plugin. Then we add the following checkbox to the configuration of our multibranch pipeline:
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/df50e34e-25f9-491a-a548-7d7b0a46baf7)
+
+The branch is now building:
+![image](https://github.com/TomSpencerLondon/MyApplicationRepo/assets/27693622/2f04963a-a60a-45a3-a26a-d3fc8a7d3d0f)
+
+We have added the token as a webhook on our github repository.
+
+### How to setup Quality gates in SonarQube - Add SonarQube quality gates to the Jenkins build pipeline
+
+SonarQube is a popular static code analysis tool. SonarQube is open-sourced. We can set up quality gates for Sonarqube and 
+force the build to fail in Jenkins when quality gate conditions are not met.
+
+To set up the quality gates we have to add a sonarqube webhook. This link is useful for this:
+https://www.coachdevops.com/2021/01/how-to-setup-quality-gates-in-sonarqube.html
+
+```groovy
+node {
+
+    def mvnHome = tool 'Maven3'
+    stage ("checkout")  {
+     //enter your repo info
+    }
+
+     stage ('Build')  {
+        sh "${mvnHome}/bin/mvn -f MyWebApp/pom.xml clean install"
+   }
+     stage ('Code Quality scan')  {
+       withSonarQubeEnv('SonarQube') {
+        sh "${mvnHome}/bin/mvn -f MyWebApp/pom.xml sonar:sonar"
+        }
+   }
+   
+     stage("Quality Gate") {
+        timeout(time: 1, unit: 'HOURS') {
+            waitForQualityGate abortPipeline: true
+        }
+  }       
+}
+```
+
+### Bonus Lab Exercise 5 - Install artifactory using Docker Compose - Install Artifactory using Docker Compose on Ubuntu 22.0.4
+How to set up JFrog Artifactory using Docker-compose
+
+Artifactory is an open source, binary repository manager. The key features of Artifactory include:
+- support 27 different package types including helm charts, docker images
+- single source of truth for binaries
+- integration with all CI/CD tools
+- role based authorization with teams to manage artifacts
+- create local, remote and virtual repositories
+
+#### What is Docker Compose?
+Docker compose is a tool for defining and running multi-container Docker applications. With a single command we can create and
+start all services from our configuration. Docker-Compose allows us to issue multiple commands.
+This link is useful for docker-compose:
+
+Change Host Name to Artifactory
+```bash
+sudo hostnamectl set-hostname Artifactory
+```
+
+Perform System update
+```bash
+sudo apt update
+```
+
+Install Docker-Compose
+```bash
+sudo apt install docker-compose -y
+```
+
+Create docker-compose.yml. This yml has all the configuration for installing Artifactory on Ubuntu EC2.
+```bash
+sudo vi docker-compose.yml
+```
+
+We add our docker-compose.yml:
+```yaml
+version: "3.3"
+services:
+  artifactory-service:
+    image: docker.bintray.io/jfrog/artifactory-oss:7.49.6
+    container_name: artifactory
+    restart: always
+    networks:
+      - ci_net
+    ports:
+      - 8081:8081
+      - 8082:8082
+    volumes:
+      - artifactory:/var/opt/jfrog/artifactory
+
+volumes:
+  artifactory:
+networks:
+  ci_net:
+
+```
+
+Now we execute the compose file using Docker compose command to start Artifactory Container:
+```bash
+sudo docker-compose up -d
+```
+
+and make sure artifactory is up and running:
+
+```bash
+sudo docker-compose logs --follow
+```
+
+We can check if Artifactory is running by typing:
+```bash
+curl localhost:8081
+```
+
+This link was useful for adding artifactory to Jenkins:
+https://www.coachdevops.com/2023/01/how-to-integrate-artifactory-with.html
+
+### Lab Exercise 15 - How to install Terraform on Ubuntu 22.0.4 | TerraForm Installation on Ubuntu 22.0.4 | Setup Terraform on Ubuntu
+This link is useful for installing terraform:
+https://www.cidevops.com/2020/04/how-to-install-terraform-on-ubuntu-1804.html
+
+To get the latest terraform on Ubuntu:
+
+```bash
+which terraform
+cd /opt/terraform
+sudo wget https://releases.hashicorp.com/terraform/1.4.6/terraform_1.4.6_linux_386.zip
+unzip terraform_1.4.6_linux_386.zip 
+mv terraform usr/local/bin
+terraform --version
+```
 
 
+Option 1 for Windows laptops - Install Terraform on Windows Laptop
+If are using Windows laptop, you can also install Terraform on your local machine. link is below:
+https://www.coachdevops.com/2019/04/terraform-windows-download.html
+
+Option 2 for Apple laptops - Install Terraform on Apple Mac OS
+https://www.cidevops.com/2020/04/how-to-install-terraform-on-mac-os.html
+
+Option 3 for Ubuntu 18.0.4 EC2 - Install Terraform on Ubuntu Linux OS
+https://www.cidevops.com/2020/04/how-to-install-terraform-on-ubuntu-1804.html
+
+
+### Note:
+
+This is an overview of scripted, declarative and multibranch pipelines:
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/bc105176-e1af-4d19-92ce-11faf5a33e70)
