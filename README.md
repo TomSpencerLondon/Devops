@@ -816,7 +816,7 @@ The branch is now building:
 
 We have added the token as a webhook on our github repository.
 
-### How to setup Quality gates in SonarQube - Add SonarQube quality gates to the Jenkins build pipeline
+### Lab 14 How to setup Quality gates in SonarQube - Add SonarQube quality gates to the Jenkins build pipeline
 
 SonarQube is a popular static code analysis tool. SonarQube is open-sourced. We can set up quality gates for Sonarqube and 
 force the build to fail in Jenkins when quality gate conditions are not met.
@@ -934,10 +934,11 @@ To get the latest terraform on Ubuntu:
 
 ```bash
 which terraform
+mkdir /opt/terraform
 cd /opt/terraform
 sudo wget https://releases.hashicorp.com/terraform/1.4.6/terraform_1.4.6_linux_386.zip
 unzip terraform_1.4.6_linux_386.zip 
-mv terraform usr/local/bin
+mv terraform /usr/local/bin
 terraform --version
 ```
 
@@ -957,3 +958,375 @@ https://www.cidevops.com/2020/04/how-to-install-terraform-on-ubuntu-1804.html
 
 This is an overview of scripted, declarative and multibranch pipelines:
 ![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/bc105176-e1af-4d19-92ce-11faf5a33e70)
+
+### Lab 16 - Provisioning an EC2 instance using Terraform in AWS Cloud
+
+For this lab we are going to create an EC2 instance using Terraform in AWS with an IAM role.
+
+![terraform](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/e41667c2-dd21-4374-9687-a5f925161b80)
+
+We will use terraform from our EC2 instance to create new EC2 instances.
+
+This is the variables.tf:
+```yaml
+
+variable "aws_region" {
+       description = "The AWS region to create things in."
+       default     = "us-east-2"
+}
+
+variable "key_name" {
+    description = " SSH keys to connect to ec2 instance"
+    default     =  "terraform-us-east-2"
+}
+
+variable "instance_type" {
+    description = "instance type for ec2"
+    default     =  "t2.micro"
+}
+
+variable "security_group" {
+    description = "Name of security group"
+    default     = "my-jenkins-security-group-2023"
+}
+
+variable "tag_name" {
+    description = "Tag Name of for Ec2 instance"
+    default     = "my-ec2-instance"
+}
+variable "ami_id" {
+    description = "AMI for Ubuntu Ec2 instance"
+    default     = "ami-0b9064170e32bde34"
+}
+```
+
+This is the main.tf:
+```yaml
+provider "aws" {
+  region = var.aws_region
+}
+
+resource "aws_vpc" "main" {
+  cidr_block = "172.16.0.0/16"
+  instance_tenancy = "default"
+  tags = {
+    Name = "main"
+  }
+}
+
+        #Create security group with firewall rules
+  resource "aws_security_group" "jenkins-sg-2023" {
+  name        = var.security_group
+  description = "security group for jenkins"
+
+  ingress {
+  from_port   = 8080
+  to_port     = 8080
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+  from_port   = 22
+  to_port     = 22
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+  }
+
+        # outbound from Jenkins server
+  egress {
+  from_port   = 0
+  to_port     = 65535
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags= {
+  Name = var.security_group
+  }
+}
+
+  resource "aws_instance" "myFirstInstance" {
+  ami           = var.ami_id
+  key_name = var.key_name
+  instance_type = var.instance_type
+  vpc_security_group_ids = [aws_security_group.jenkins-sg-2023.id]
+  tags= {
+  Name = var.tag_name
+  }
+}
+
+        # Create Elastic IP address
+  resource "aws_eip" "myElasticIP" {
+  vpc      = true
+  instance = aws_instance.myFirstInstance.id
+  tags= {
+  Name = "jenkins_elastic_ip"
+  }
+}
+```
+
+We use:
+- terraform init
+- terraform plan
+- terraform apply
+
+We also need to create an IAM role to provision EC2 instance in AWS. This article explains quite well:
+https://www.coachdevops.com/2021/07/how-to-create-ec2-instances-using.html
+
+I added the terraform files here:
+https://github.com/TomSpencerLondon/terraform-ec2
+
+### Lab Exercise 17 - Provisioning an EC2 instance for SonarQube using Terraform in AWS
+
+We can use the following configuration on our EC2 instance to provision a SonarQube EC2 instance:
+
+```yaml
+resource "aws_vpc" "sonar" {
+  cidr_block = "172.16.0.0/16"
+  instance_tenancy = "default"
+  tags = {
+    Name = "sonar_vpc"
+  }
+}
+
+ resource "aws_security_group" "security_sonar_group_2023" {
+      name        = "security_sonar_group_2023"
+      description = "security group for Sonar"
+      ingress {
+        from_port   = 9000
+        to_port     = 9000
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+      }
+
+     ingress {
+        from_port   = 22
+        to_port     = 22
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+      }
+
+     # outbound from Sonar server
+      egress {
+        from_port   = 0
+        to_port     = 65535
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+      }
+
+      tags= {
+        Name = "security_sonar"
+      }
+    }
+  resource "aws_instance" "mySonarInstance" {
+  ami           = "ami-0b9064170e32bde34"
+  key_name = "your_aws_ssh_key"
+  instance_type = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.security_sonar_group_2023.id]
+
+  tags= {
+  Name = "sonar_instance"
+  }
+  }
+
+        # Create Elastic IP address for Sonar instance
+  resource "aws_eip" "mySonarInstance" {
+  vpc      = true
+  instance = aws_instance.mySonarInstance.id
+  tags= {
+  Name = "sonar_elastic_ip"
+  }
+}
+```
+We then use the following commands:
+- terraform plan
+- terraform apply
+
+### Lab 18 - How to destroy all resources or a specific resource using Terraform in AWS
+In order to destroy all the resources we have created using Terraform we can run the following command:
+- terraform destroy
+
+In order to destroy specific resources we can run:
+```bash
+ubuntu@ip-172-31-3-136:~/project-terraform$ terraform state list
+aws_eip.myElasticIP
+aws_eip.mySonarInstance
+aws_instance.myFirstInstance
+aws_instance.mySonarInstance
+aws_security_group.jenkins-sg-2023
+aws_security_group.security_sonar_group_2023
+aws_vpc.main
+aws_vpc.sonar
+```
+
+In order to destroy the EC2 instance we can run:
+```yaml
+terraform destroy -target aws_instance.myFirstInstance
+```
+If we want to delete the security group we can use the following:
+```bash
+terraform destroy -target aws_security_group.jenkins-sg-2023
+```
+
+### Lab Exercise 19 - How to automate infrastructure setup in Terraform using Jenkins pipeline
+
+![terraform_jenkins](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/7125a29e-43c3-4494-bf76-4a9c2c7bea47)
+This link is useful for using terraform with Jenkins:
+https://www.coachdevops.com/2021/12/jenkins-pipeline-terraform-integration.html
+
+The repo here contains the scripts we will use:
+https://github.com/TomSpencerLondon/my-infrastructure-terraform
+
+The backend.tf file manages the state information:
+```yaml
+terraform {
+  backend "s3" {
+    bucket = "my-aws-tf-state-bucket"
+    key = "main"
+    region = "us-east-1"
+    dynamodb_table = "my-dynamo-db-table"
+  }
+}
+```
+
+We will store this terraform state information on an S3 bucket. In our main.tf:
+
+```yaml
+provider "aws" {
+  region = var.aws_region
+}
+
+resource "aws_vpc" "main" {
+  cidr_block = "172.16.0.0/16"
+  instance_tenancy = "default"
+  tags = {
+    Name = "main"
+  }
+}
+
+#Create security group with firewall rules
+resource "aws_security_group" "jenkins-sg-2022" {
+  name        = var.security_group
+  description = "security group for Ec2 instance"
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+ ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+ # outbound from jenkis server
+  egress {
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags= {
+    Name = var.security_group
+  }
+}
+
+resource "aws_instance" "myFirstInstance" {
+  ami           = var.ami_id
+  key_name = var.key_name
+  instance_type = var.instance_type
+  vpc_security_group_ids = [aws_security_group.jenkins-sg-2022.id]
+  tags= {
+    Name = var.tag_name
+  }
+}
+
+# Create Elastic IP address
+resource "aws_eip" "myFirstInstance" {
+  vpc      = true
+  instance = aws_instance.myFirstInstance.id
+tags= {
+    Name = "my_elastic_ip"
+  }
+}
+```
+Here we create an EC2 instance, Elastic IP address and a port to access the instance.
+
+We also create an S3 bucket to store the state:
+
+```yaml
+resource "aws_s3_bucket" "my-s3-bucket" {
+  bucket_prefix = var.bucket_prefix
+  acl = var.acl
+  
+   versioning {
+    enabled = var.versioning
+  }
+  
+  tags = var.tags
+}
+```
+
+We use bucket_prefix to create a random unique name for our bucket. We also use a variables file to avoid
+hardcoding:
+
+```yaml
+variable "aws_region" {
+  description = "The AWS region to create things in."
+  default     = "us-east-1"
+}
+
+  variable "key_name" {
+  description = " SSH keys to connect to ec2 instance"
+  default     =  "mySep22Key"
+}
+
+  variable "instance_type" {
+  description = "instance type for ec2"
+  default     =  "t2.micro"
+}
+
+  variable "security_group" {
+  description = "Name of security group"
+  default     = "jenkins-sgroup-dec-2021"
+}
+
+  variable "tag_name" {
+  description = "Tag Name of for Ec2 instance"
+  default     = "my-ec2-instance"
+}
+  variable "ami_id" {
+  description = "AMI for Ubuntu Ec2 instance"
+  default     = "ami-05e8e219ac7e82eba"
+}
+  variable "versioning" {
+  type        = bool
+  description = "(Optional) A state of versioning."
+  default     = true
+}
+  variable "acl" {
+  type        = string
+  description = " Defaults to private "
+  default     = "private"
+}
+  variable "bucket_prefix" {
+  type        = string
+  description = "(required since we are not using 'bucket') Creates a unique bucket name beginning with the specified prefix"
+  default     = "my-s3bucket-"
+}
+  variable "tags" {
+  type        = map
+  description = "(Optional) A mapping of tags to assign to the bucket."
+  default     = {
+  environment = "DEV"
+  terraform   = "true"
+  }
+}
+```
+We will use a Jenkins pipeline to run our terraform scripts.
