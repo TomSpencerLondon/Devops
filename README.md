@@ -1330,3 +1330,44 @@ variable "aws_region" {
 }
 ```
 We will use a Jenkins pipeline to run our terraform scripts.
+
+
+#### Ansible - Configuration Management Tool
+
+Ansible connects to servers with ssh and creates groups under a group in an inventory file. The playbook then runs the configuration:
+
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/52892471-12ff-45ac-8746-678bb6742fd3)
+
+#### What is Ansible?
+- Open source, Red Hat, based on Python language
+- Infrastructure as code tool
+- Configuration Management tool
+- Provides flexibility and robust
+- Ansible is mostly CLI based
+- Ansible Tower has User interface which is the commercial version
+
+Other solutions include, Chef or Puppet
+
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/d29c91e0-5e66-4b47-ad93-d7fe7028cadc)
+
+
+Chef or Puppet use the pull model:
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/fc51bf03-0195-4d19-818b-83122505f9a7)
+
+This repo is useful for ansible infrastructure:
+https://github.com/akannan1087/myAnsibleInfraRepo
+
+How Ansible manages AWS resources:
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/f8a23bb3-52e6-4fa0-b88d-b3a8fb77db00)
+
+Boto is an SDK for python libraries.
+
+This is useful for ansible:
+https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible
+
+Ansible is idempotent - running once or several times doesn't change the result
+
+Set up Jenkins using Ansible:
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/86ac9209-04f9-4677-98ac-59e29d4fe2be)
+
+
