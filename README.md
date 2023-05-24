@@ -1674,3 +1674,10 @@ to execute the playbook.
 
 We can now see the apache instance from our instance's IP:
 ![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/ef813d3f-adba-49bf-9519-aeb4a7eafea4)
+
+We can also check the installation of php and mysql on the target node:
+```bash
+php --version
+mysql --version
+```
+
