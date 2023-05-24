@@ -1371,3 +1371,306 @@ Set up Jenkins using Ansible:
 ![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/86ac9209-04f9-4677-98ac-59e29d4fe2be)
 
 
+#### Lab 20 Installing Ansible
+Install ansible on linux:
+https://www.coachdevops.com/2020/04/install-ansible-on-ubuntu-how-to-setup.html
+
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/6262a4d9-227e-4816-967a-4637bfbc317c)
+
+
+This link is useful for mac installation of Ansible:
+https://www.coachdevops.com/2020/08/how-to-install-ansible-on-mac-os.html
+
+
+#### Lab 21 Ansible Infrastructure Automation - New EC2 Setup for Jenkins
+
+In this lab we will create an EC2 instance setup using Ansible playbook.
+
+This link is useful for EC2 with Ansible on ubuntu:
+https://www.coachdevops.com/2021/07/ansible-playbook-for-provisioning-new.html
+
+This link is useful for ansible with Mac:
+https://www.cidevops.com/2018/12/ansible-playbook-for-provisioning-new.html
+
+The commands to create EC2 instance using Ansible are:
+- Login to EC2 instance using Git bash or ITerm/putty where you installed Ansible. Execute the below command:
+- Create an Inventory file first
+```bash
+sudo mkdir /etc/ansible
+```
+- Edit Ansible hosts or inventory file
+
+```bash
+sudo vi /etc/ansible/hosts
+```
+
+Add the below two lines in the end of the file:
+```bash
+[localhost]
+local
+```
+
+We can then create our playbook:
+```bash
+cd ~
+mkdir playbooks  
+cd playbooks
+sudo vi create_ec2.yml 
+```
+
+This is the create_jenkins_ec2.yml file:
+```yaml
+
+
+---
+ - name:  provisioning EC2 instances using Ansible
+   hosts: localhost
+   connection: local
+   gather_facts: False
+   tags: provisioning
+
+   vars:
+     keypair: yourEC2Key
+     instance_type: t2.small
+     image: ami-007855ac798b5175e
+     wait: yes
+     group: webserver
+     count: 1
+     region: us-east-1
+     security_group: my-jenkins-security-grp
+   
+   tasks:
+
+     - name: Task # 1 - Create my security group
+       local_action: 
+         module: ec2_group
+         name: "{{ security_group }}"
+         description: Security Group for webserver Servers
+         region: "{{ region }}"
+         rules:
+            - proto: tcp
+              from_port: 22
+              to_port: 22
+              cidr_ip: 0.0.0.0/0
+            - proto: tcp
+              from_port: 8080
+              to_port: 8080
+              cidr_ip: 0.0.0.0/0
+            - proto: tcp
+              from_port: 80
+              to_port: 80
+              cidr_ip: 0.0.0.0/0
+         rules_egress:
+            - proto: all
+              cidr_ip: 0.0.0.0/0
+       register: basic_firewall
+     - name: Task # 2 Launch the new EC2 Instance
+       local_action:  ec2 
+                      group={{ security_group }} 
+                      instance_type={{ instance_type}} 
+                      image={{ image }} 
+                      wait=true 
+                      region={{ region }} 
+                      keypair={{ keypair }}
+                      count={{count}}
+       register: ec2
+     - name: Task # 3 Add Tagging to EC2 instance
+       local_action: ec2_tag resource={{ item.id }} region={{ region }} state=present
+       with_items: "{{ ec2.instances }}"
+       args:
+         tags:
+           Name: MyTargetEc2Instance
+```
+
+We can then run the playbook with:
+```bash
+ubuntu@ip-172-31-37-87:~/playbooks$ ansible-playbook create_ec2.yml
+
+PLAY [provisioning EC2 instances using Ansible] *****************************************************************************************************************************************
+
+TASK [Task] *****************************************************************************************************************************************************************************
+changed: [local]
+
+TASK [Task] *****************************************************************************************************************************************************************************
+changed: [local]
+
+TASK [Task] *****************************************************************************************************************************************************************************
+changed: [local] => (item={'id': 'i-0fe5f9f6567453483', 'ami_launch_index': '0', 'private_ip': '172.31.45.123', 'private_dns_name': 'ip-172-31-45-123.eu-west-2.compute.internal', 'public_ip': '18.168.149.81', 'dns_name': 'ec2-18-168-149-81.eu-west-2.compute.amazonaws.com', 'public_dns_name': 'ec2-18-168-149-81.eu-west-2.compute.amazonaws.com', 'state_code': 16, 'architecture': 'x86_64', 'image_id': 'ami-0eb260c4d5475b901', 'key_name': 'ansible-key', 'placement': 'eu-west-2b', 'region': 'eu-west-2', 'kernel': None, 'ramdisk': None, 'launch_time': '2023-05-24T09:37:20.000Z', 'instance_type': 't2.small', 'root_device_type': 'ebs', 'root_device_name': '/dev/sda1', 'state': 'running', 'hypervisor': 'xen', 'tags': {}, 'groups': {'sg-00d44d51375722a22': 'my-jenkins-security-grp'}, 'virtualization_type': 'hvm', 'ebs_optimized': False, 'block_device_mapping': {'/dev/sda1': {'status': 'attached', 'volume_id': 'vol-0ed945ded76bb092b', 'delete_on_termination': True}}, 'tenancy': 'default'})
+
+PLAY RECAP ******************************************************************************************************************************************************************************
+local                      : ok=3    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+```
+
+We can then see the ec2 instance created:
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/4cd24e36-a85c-4bb6-aae9-69ec8ef31ad5)
+
+
+### Lab Exercise 22 - Config Mgmnt Automation - Setup Jenkins on Target EC2 using Ansible Playbook
+This link is helpful:
+https://www.coachdevops.com/2021/08/how-to-setup-jenkins-on-ubuntu-using.html
+
+First we should install java:
+```bash
+sudo apt-get update
+sudo apt-get install default-jdk -y
+java --version
+```
+We already have ansible from lab exercise 21.
+
+Next we create the Java 11 Playbook:
+https://www.cidevops.com/2020/04/ansible-playbook-for-java-11.html
+
+on our controller ansible instance we run:
+```bash
+ssh-keygen
+```
+copy the key:
+```bash
+sudo cat ~/.ssh/id_rsa.pub
+```
+
+Now we login to the target node we created in Lab Exercise 21. We open the authorized_keys file:
+```bash
+sudo vi /home/ubuntu/.ssh/authorized_keys
+
+```
+and add our new key.
+
+We then go back to the management node and add the target node address to our hosts:
+```bash
+sudo vi /etc/ansible/hosts
+[My_Group]  
+xx.xx.xx.xx ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa  ansible_python_interpreter=/usr/bin/python3
+```
+
+We can then test our connection:
+```bash
+ansible -m ping all
+ansible all -a "whoami"
+```
+
+We then add our Java11 playbook:
+```bash
+cd ~/playbooks
+sudo vi installJava11.yml
+```
+This is the yaml we add to the file:
+```yaml
+---
+- hosts: My_Group
+  tasks:
+    - name: Task - 1 Update APT package manager repositories cache
+      become: true
+      apt:
+        update_cache: yes
+    - name: Task -2 Install Java using Ansible
+      become: yes
+      apt:
+        name: "{{ packages }}"
+        state: present
+      vars:
+        packages:
+           - openjdk-11-jdk
+```
+This then installs Java on our target node:
+```yaml
+java -version
+openjdk version "11.0.7" 2020-04-14
+OpenJDK Runtime Environment (build 11.0.7+10-post-Ubuntu-2ubuntu218.04)
+OpenJDK 64-Bit Server VM (build 11.0.7+10-post-Ubuntu-2ubuntu218.04, mixed mode, sharing)
+```
+
+Next we can add Jenkins. This link is useful:
+https://www.cidevops.com/2018/05/install-jenkins-using-ansible-playbook.html
+
+We will add another playbook in our ansible controller node:
+```bash
+sudo vi installJenkins.yml
+```
+
+We can now access Jenkins from our target node ip address:
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/44a9a64b-b092-454e-95c3-10c2c8fc46aa)
+
+Next we will install maven from our controller ansible node to our target node. We create teh installMaven ansible playbook.
+This link is useful:
+https://www.cidevops.com/2019/01/install-maven-using-ansible-playbook-on.html
+
+```bash
+sudo vi installMaven.yml
+---
+- hosts: My_Group
+  tasks:
+    - name: Install Maven using Ansible
+      become: yes
+      apt:
+        name: "{{ packages }}"
+        state: present
+      vars:
+        packages:
+           - maven
+
+ansible-playbook installMaven.yml
+```
+
+### Lab 23 - Config. Mgmt Automation - Deploy LAMP stack using Ansible Playbook on target EC2 node
+
+We will now install a LAMP stack on our target node. LAMP stands for Linux, Apache, MySQL and PHP.
+We will use Ansible playbooks to target our nodes.
+LAMP Stack comprises the following open-source software applications.
+- Linux – This is the operating system hosting the Applications.
+- Apache – Apache HTTP is a free and open-source cross-platform web server.
+- MySQL– Open Source relational database management system.
+- PHP – Programming/Scripting Language used for developing Web applications.
+
+We can create the Lamp stack using our ansible controller for which we have already run ```ssh-keygen```:
+```bash
+sudo cat ~/.ssh/id_rsa.pub
+```
+and then copy the output. We can then log into the instance where we want to create our LAMP stack and open the following:
+```bash
+sudo vi /home/ubuntu/.ssh/authorized_keys
+```
+
+We can then go back to the management node and add the private or public ip address of the node:
+
+```bash
+sudo vi /etc/ansible/hosts
+
+[LAMP_Group]  
+xx.xx.xx.xx ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa  ansible_python_interpreter=/usr/bin/python3
+```
+
+We can then add the installation lamp playbook:
+
+```bash
+sudo vi installLAMP.yml
+---
+- hosts: LAMP_Group
+  tasks:
+    - name: Task # 1 - Update APT package manager repositories cache
+      become: true
+      apt:
+        update_cache: yes
+    - name: Task # 2 - Install LAMP stack using Ansible
+      become: yes
+      apt:
+        name: "{{ packages }}"
+        state: present
+      vars:
+        packages:
+           - apache2
+           - mysql-server
+           - php
+```
+
+and run:
+```bash
+ansible-playbook installLAMP.yml
+```
+to execute the playbook.
+
+![Screen Shot 2022-12-29 at 5 36 37 PM](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/29fd3e4b-af46-476e-b7c8-7f9356bcbb51)
+
+We can now see the apache instance from our instance's IP:
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/ef813d3f-adba-49bf-9519-aeb4a7eafea4)
