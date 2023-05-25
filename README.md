@@ -1821,3 +1821,66 @@ Some tips for this lab include:
 - This link was useful for dealing with docker permission issue:
   https://www.phind.com/search?cache=c2c4254b-4a66-45a8-b6ce-c5865b7dcd6d
 
+### Lab 28 - Setup Nexus Docker Registry and Upload Docker images to Nexus Docker Registry
+
+We will now upload docker images to Nexus:
+
+```bash
+ubuntu@ip-172-31-37-246:~$ sudo docker login -u admin -p http://18.134.134.72:8085
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+Error response from daemon: Get "https://registry-1.docker.io/v2/": unauthorized: incorrect username or password
+ubuntu@ip-172-31-37-246:~$ sudo docker login -u admin -p password http://18.134.134.72:8085
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+ubuntu@ip-172-31-37-246:~$ git clone https://bitbucket.org/ananthkannan/mydockerrepo; cd mydockerrepo/pythonApp
+Cloning into 'mydockerrepo'...
+Receiving objects: 100% (167/167), 16.73 KiB | 951.00 KiB/s, done.
+Resolving deltas: 100% (70/70), done.
+ubuntu@ip-172-31-37-246:~/mydockerrepo/pythonApp$ ls
+Dockerfile  app.py  install_steps.txt  requirements.txt  templates
+ubuntu@ip-172-31-37-246:~/mydockerrepo/pythonApp$ sudo docker build . -t 18.134.134.72:8085/mypythonapp123
+Sending build context to Docker daemon  10.75kB
+Step 1/8 : FROM alpine:3.5
+ ---> f80194ae2e0c
+Step 2/8 : RUN apk add --update py2-pip
+ ---> Using cache
+ ---> 56204fb60efa
+Step 3/8 : COPY requirements.txt /usr/src/app/
+ ---> Using cache
+ ---> 7331cd3dc4e1
+Step 4/8 : RUN pip install --no-cache-dir -r /usr/src/app/requirements.txt
+ ---> Using cache
+ ---> 157ea9e24e54
+Step 5/8 : COPY app.py /usr/src/app/
+ ---> Using cache
+ ---> deada879e8e5
+Step 6/8 : COPY templates/index.html /usr/src/app/templates/
+ ---> Using cache
+ ---> 64be068b5512
+Step 7/8 : EXPOSE 5000
+ ---> Using cache
+ ---> b252491210c4
+Step 8/8 : CMD ["python", "/usr/src/app/app.py"]
+ ---> Using cache
+ ---> 90726e9e6329
+Successfully built 90726e9e6329
+Successfully tagged 18.134.134.72:8085/mypythonapp123:latest
+ubuntu@ip-172-31-37-246:~/mydockerrepo/pythonApp$ sudo docker push 18.134.134.72:8085/mypythonapp123
+Using default tag: latest
+The push refers to repository [18.134.134.72:8085/mypythonapp123]
+b02d32ef023b: Pushed 
+2fa3d7ef13c2: Pushed 
+881df3d74af1: Pushed 
+d9618a7a5dd1: Pushed 
+cf9645d2305d: Pushed 
+f566c57e6f2d: Pushed 
+latest: digest: sha256:5099ce8e9955842a6efaf19b1f4e504cfb150b248a8798551283374fa0859e1e size: 1571
+```
+
+We can now see our docker image on nexus:
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/3d7280f3-7c51-4b32-8a07-a1869184c5c5)
+
