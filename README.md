@@ -1681,3 +1681,143 @@ php --version
 mysql --version
 ```
 
+### Lab Exercise 24 - Config.Mgmt Automation - Terminate EC2 instances using Ansible Playbook
+
+We can also terminate EC2 instances using an Ansible playbook:
+We can log into our ansible controller and ensure that we have the following:
+
+```bash
+sudo vi /etc/ansible/hosts 
+
+[localhost]
+local
+```
+
+We can then add our terminate.yml file to the playbooks folder on our ansible controller instance:
+```bash
+---
+ - name: ec2 provisioning using Ansible
+   hosts: local
+   connection: local
+   gather_facts: False
+
+ - hosts: local
+   gather_facts: False
+   connection: local
+   vars:
+     - region: 'us-east-2'
+     - ec2_id: 'i-05f39cfb80c97df38'
+   tasks:
+     - name: Terminate instances
+       local_action: ec2
+         state='absent'
+         instance_ids='{{ ec2_id }}'
+         region='{{ region }}'
+         wait=True
+
+```
+
+We can either hard code the ec2 id we wish to terminate otherwise we can delete the hardcoded entry
+and run the playbook with the following:
+```bash
+ansible-playbook terminate.yml -e ec2_id=i-xxxx
+```
+
+#### Lab Exercise 25 - Docker setup on Jenkins Ubuntu EC2 instance
+
+We can now work on installing Docker on our Jenkins instance.
+
+Docker is a platform for developers and sysadmins to develop, deploy and run applications with containers.
+The use of Linux containers to deploy applications is called containerization. Containers are not new but their use for easily deploying applications
+is quite new.
+
+First we will install Docker on the Ubuntu instance where we have installed jenkins.
+This link is useful for installing docker:
+https://www.coachdevops.com/2019/05/install-docker-ubuntu-how-to-install.html
+
+We can then set up a docker registry. There are at least four options:
+Option 1 - DockerHub as Docker Registry
+Also, create an account(keep all lowercase in your username)  in the below website for storing docker images in public docker registry..
+https://cloud.docker.com/
+
+Option 2 - Configure Nexus as Docker Registry
+Please click below link to configure Nexus as Docker Registry.
+https://www.cidevops.com/2020/02/how-to-configure-nexus-as-docker.html
+
+Option 3 - Configure AWS ECR as Docker Registry
+Please click below link to configure Amazon ECR as Docker Registry.
+https://www.cidevops.com/2020/05/how-to-setup-elastic-container-registry.html
+
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/b451d5b5-c058-4dd8-bbd7-28f50c6afd28)
+
+
+
+Option 4 - Configure Azure Container Registry
+Please click below link to configure ACR in Azure.
+https://www.coachdevops.com/2019/12/how-to-upload-docker-images-to-azure.html
+
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/138646b2-574d-471d-9966-d51a9cc7c1f6)
+
+Step 1 - Create Azure Container Registry (ACR)
+
+Go to https://portal.azure.com/
+Create an ACR repository.
+
+Step 2 - Download sample Python App
+
+Go to your machine where you have docker images stored. perform below command to download sample pythonapp which is already dockerized.
+```bash
+git clone https://bitbucket.org/ananthkannan/mydockerrepo/src/master/pythonApp/
+cd  pythonApp/pythonApp
+```
+
+Step 3 - Create docker image
+```bash
+docker build . -t mypythonapp
+
+```
+Then type the below command:
+```bash
+sudo docker images
+```
+Log into the ecr repository using the username and password.
+
+Step 4 - Tag and Push your docker image to ACR
+Now tag the docker image per as below:
+```bash
+sudo docker tag mypythonapp mydockerazureregistry.azurecr.io/mypythonapp
+sudo docker push mydockerazureregistry.azurecr.io/mypythonapp
+```
+
+#### Lab 26 - Docker Labs - How to Create Docker image and Upload Docker image into Amazon Elastic Container Registry
+This is  a recap on the steps for configuring Amazon ECR as Docker Registry and uploading docker images into ECR manually through command line:
+
+Steps for configuring Amazon ECR as Docker Registry and Creating/uploading Docker images(Manual way)
+
+https://www.cidevops.com/2020/05/how-to-setup-elastic-container-registry.htm
+
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/cdcbf922-1549-4d8d-b93a-d5bbff1e1f9b)
+
+### Lab 27 - Docker - Automate Upload of Docker images to Amazon ECR using Jenkins Pipeline
+This link is useful:
+https://www.cidevops.com/2020/07/automate-docker-builds-using-jenkins.html
+
+For this lab will automate the following using the Jenkins pipeline:
+- Creating docker images
+- Uploading docker images into Amazon ECR
+- Deploying docker containers in Jenkins
+- Access pythonApp in Jenkins that is hosted inside the docker container.
+
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/4b1f05b7-11be-4b4c-a6df-e28a7ad79555)
+
+Our Jenkins Pipeline will:
+- Automate builds
+- Automate Docker image creation
+- Automate Docker image upload into AWS ECR
+- Automate Docker container provisioning
+
+Some tips for this lab include:
+- Add ssh keygen for jenkins user and use as deploy key on repository
+- This link was useful for dealing with docker permission issue:
+  https://www.phind.com/search?cache=c2c4254b-4a66-45a8-b6ce-c5865b7dcd6d
+
