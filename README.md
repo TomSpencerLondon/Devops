@@ -1884,3 +1884,128 @@ latest: digest: sha256:5099ce8e9955842a6efaf19b1f4e504cfb150b248a8798551283374fa
 We can now see our docker image on nexus:
 ![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/3d7280f3-7c51-4b32-8a07-a1869184c5c5)
 
+### Lab 29 - Containerize PHP App & Automate Docker image creation
+This link is useful:
+https://www.coachdevops.com/2020/05/automate-docker-builds-using-jenkins_3.html
+
+We will now automate building a PHP docker application for the following steps:
+1. Automating Docker image creation
+2. Automating Upload of Docker images to Docker registry
+3. Automating running Docker containers in Jenkins
+
+First we create credentials for our docker repository using our docker login and password. We will refer to the id of the credentials in our
+pipeline.
+
+Next we create a scripted pipeline with the following pipeline:
+```bash
+
+pipeline {
+    agent any 
+    environment {
+        //TODO # 1 --> once you sign up for Docker hub, use that user_id here
+        registry = "your_docker_userid/myphp-app-may20"
+        //TODO #2 - update your credentials ID after creating credentials for connecting to Docker Hub
+
+
+        registryCredential = 'your_credentials_id_from_step 1_above'
+        dockerImage = ''
+    }
+    
+    stages {
+        stage('Cloning Git') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://bitbucket.org/ananthkannan/phprepo/']]])       
+            }
+        }
+    
+    // Building Docker images
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry
+        }
+      }
+    }
+    
+     // Uploading Docker images into Docker Hub
+    stage('Upload Image') {
+     steps{    
+         script {
+            docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+            }
+        }
+      }
+    }
+    
+     // Stopping Docker containers for cleaner Docker run
+     stage('docker stop container') {
+         steps {
+            sh 'docker ps -f name=myPhpContainer -q | xargs --no-run-if-empty docker container stop'
+            sh 'docker container ls -a -fname=myPhpContainer -q | xargs -r docker container rm'
+         }
+       }
+    
+    
+    // Running Docker container, make sure port 8096 is opened in 
+    stage('Docker Run') {
+     steps{
+         script {
+            dockerImage.run("-p 8086:80 --rm --name myPhpContainer")
+         }
+      }
+    }
+  }
+}  
+```
+
+We then build the pipeline and can access the url:
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/5cf42530-3c46-40d8-aefd-eeff56433282)
+
+### Lab 30 - Kubernetes Labs - Amazon EKS Cluster setup in AWS using eksctl
+We will now set up a Kubernetes Cluster in AWS using the eksctl command.
+This link is useful:
+https://www.coachdevops.com/2022/02/create-amazon-eks-cluster-by-eksctl-how.html
+
+Amazon EKS is a fully managed container orchestration service. EKS allows you to quickly deploy a production ready Kubernetes cluster in Azure, deploy and manage containerized applications more easily with a fully managed Kubernetes service.
+EKS takes care of the Master node/Control plane.
+
+EKS clusters can be created in following ways:
+1. AWS console
+2. AWS CLI
+3. eksctl command
+4. using Terraform
+
+5. For this lab we will set up worker nodes with eksctl. We will also set up a cluster in AWS.
+
+First we install the AWS cli:
+```bash
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
+sudo apt install unzip
+sudo unzip awscliv2.zip  
+sudo ./aws/install
+aws --version
+```
+
+We can then run the following commands to install eksctl:
+https://www.coachdevops.com/2020/10/install-eksctl-on-linux-instance-how-to.html
+```bash
+ubuntu@ip-172-31-37-246:~/mydockerrepo/pythonApp$ curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+ubuntu@ip-172-31-37-246:~/mydockerrepo/pythonApp$ sudo mv /tmp/eksctl /usr/local/bin
+ubuntu@ip-172-31-37-246:~/mydockerrepo/pythonApp$ eksctl version
+0.142.0
+ubuntu@ip-172-31-37-246:~/mydockerrepo/pythonApp$ eksctl version
+```
+
+Next we install kubectl on our ubuntu jenkins instance:
+https://www.coachdevops.com/2022/05/install-kubectl-on-ubuntu-instance-how.html
+```bash
+ubuntu@ip-172-31-37-246:~/mydockerrepo/pythonApp$ sudo curl --silent --location -o /usr/local/bin/kubectl   https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/bin/linux/amd64/kubectl
+sudo chmod +x /usr/local/bin/kubectl 
+ubuntu@ip-172-31-37-246:~/mydockerrepo/pythonApp$ kubectl version --short --client
+Client Version: v1.22.6-eks-7d68063
+```
+
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/f764b561-2877-460b-91dd-a03a0f5b5cc4)
+
+
