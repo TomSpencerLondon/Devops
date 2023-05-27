@@ -2058,3 +2058,79 @@ https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html
 - using eksctl
 - using AWS management console
 - AWS cli command to create a cluster
+
+
+### Lab 32 - Kubernetes Labs - Deploy Python App into EKS Cluster using Jenkins Pipeline/Kubectl CLI
+
+In this lab with will automate deployment of Python containerized app into Amazon EKS cluster using Jenkins Pipeline. We will achieve the following:
+
+- Automating builds using Jenkins
+- Automating Docker image creation
+- Automating Docker image upload into AWS ECR
+- Automating Deployments to Kubernetes Cluster
+
+Pre-requisites:
+1. Amazon EKS Cluster is set up and running. Click here to learn how to create an Amazon EKS cluster:
+   https://www.coachdevops.com/2022/02/create-amazon-eks-cluster-by-eksctl-how.html
+2. Jenkins Master is up and running
+   https://www.coachdevops.com/2020/04/install-jenkins-ubuntu-1804-setup.html
+3. Docker, Docker pipeline and Kubectl CLI plug-ins are installed in Jenkins
+4. ECR repo created to store docker images.
+
+This link is useful for deploying our python app to the kubernetes cluster:
+https://www.cidevops.com/2022/01/deploy-python-app-into-kubernetes.html
+
+
+### Lab 33 - How to setup monitoring on EKS Cluster using Prometheus and Grafana
+In this lab we will work on setting up monitoring for EKS Cluster in AWS using Prometheus and Grafana:
+
+#### What is Prometheus?
+- Prometheus is an open source monitoring tool
+- Provides out-of-the-box monitoring capabilities for the Kubernetes container orchestration platform. It can monitor servers and databases as well.
+- Collects and stores metrics as time-series data, recording information with a timestamp
+- It is based on pull and collects metrics from targets by scraping metrics HTTP endpoints.
+
+#### What is Grafana?
+- Grafana is an open source visualization and analytics software.
+- It allows you to query, visualize, alert on, and explore your metrics no matter where they are stored.
+
+![Prometheus and Grafana](https://github.com/TomSpencerLondon/myPythonDockerRepo/assets/27693622/facddcca-5030-48f9-9c38-ea01bdccb04b)
+
+#### Key Components
+1. Prometheus server - Processes and stores metrics data
+2. Alert Manager - Sends alerts to any systems/channels
+3. Grafana - Visualize scraped data in UI
+
+#### Installation Method:
+There are many ways we can set up Prometheus and Grafana. We can install in the following ways:
+1. Create all configuration files of both Prometheus and Grafana and execute them in the right order.
+2. Prometheus operator - to simplify and automate the configuration and management of the Prometheus monitoring stack running on a Kubernetes cluster
+3. Helm chart (recommended). Using helm we can install Prometheus Operator and Grafana.
+
+#### Why use Helm?
+Helm is a package manager for Kubernetes. Helm simplifies the installation of all components in one 
+command. Install using Helm is recommended as we will not be missing any configuration steps and the process will be very efficient. 
+
+#### Prerequisites
+- EKS Cluster is already set up (we did this in lab 32)
+- install Helm 3:
+  https://www.coachdevops.com/2021/03/install-helm-3-linux-setup-helm-3-on.html
+We use the following commands for Helm 3 installation:
+```bash
+ubuntu@ip-172-31-37-246:~$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+ubuntu@ip-172-31-37-246:~$ sudo chmod 700 get_helm.sh
+ubuntu@ip-172-31-37-246:~$ sudo ./get_helm.sh
+Downloading https://get.helm.sh/helm-v3.12.0-linux-amd64.tar.gz
+Verifying checksum... Done.
+Preparing to install helm into /usr/local/bin
+helm installed into /usr/local/bin/helm
+ubuntu@ip-172-31-37-246:~$ helm version --client
+version.BuildInfo{Version:"v3.12.0", GitCommit:"c9f554d75773799f72ceef38c51210f1842a1dea", GitTreeState:"clean", GoVersion:"go1.20.3"}
+ubuntu@ip-172-31-37-246:~$ sudo su jenkins
+jenkins@ip-172-31-37-246:/home/ubuntu$ helm version --client
+version.BuildInfo{Version:"v3.12.0", GitCommit:"c9f554d75773799f72ceef38c51210f1842a1dea", GitTreeState:"clean", GoVersion:"go1.20.3"} 
+```
+
+After configuration, we can see our graphana dashboard:
+![image](https://github.com/TomSpencerLondon/myPythonDockerRepo/assets/27693622/9e882a07-1cd9-4c59-889e-ffeca9e5005a)
+
