@@ -2009,3 +2009,52 @@ Client Version: v1.22.6-eks-7d68063
 ![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/f764b561-2877-460b-91dd-a03a0f5b5cc4)
 
 
+### Lab 31 - Kubernetes Labs - Deploy Springboot Microservices App into EKS Cluster using Jenkins Pipeline and Kubectl CLI plug-in
+
+In this lab we will deploy a Springboot microservices containerized app into Amazon EKS cluster by creating a Jenkins Pipeline. We will achieve the following by creating a Jenkins pipeline:
+- Automating builds
+- Automating Docker image creation
+- Automating Docker image upload into ECR
+- Automating Docker containers Deployments into Kubernetes Cluster using Kubectl CLI plug-in
+
+Pre-requisites:
+1. Amazon EKS Cluster is set up and running. Click here to learn how to create an Amazon EKS cluster.
+2. ECR repo created to store docker images.
+3. Jenkins Master is up and running
+4. Docker, Docker pipeline and Kubectl CLI plug-ins are installed in Jenkins
+
+This link is useful for starting an eks cluster:
+https://www.coachdevops.com/2022/02/create-amazon-eks-cluster-by-eksctl-how.html
+We will start by recreating our cluster:
+```bash
+eksctl create cluster --name demo-eks --region us-east-1 --nodegroup-name my-nodes --node-type t3.small --managed --nodes 2
+```
+To delete the cluster we would run:
+```bash
+eksctl delete cluster --name demo-eks --region us-east-1
+```
+
+Agenda:
+- What is an EKS cluster?
+- What are the different ways to create EKS cluster?
+- How to deploy Microservices into EKS cluster using Jenkins pipeline
+- Set up Jenkins and install Docker and required plugins
+- Create cluster using eksctl
+- Create Jenkins Pipeline to deploy Microservices into EKS cluster
+- Verify deployment using kubectl
+- Access the Microservices app
+
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/c6ff07d2-99e6-4277-ae4a-b4a372212027)
+
+The code we will use:
+https://github.com/TomSpencerLondon/springboot-app
+
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/8c9f2fe0-08d3-4a0d-b57f-a94230896e43)
+
+EKS is a fully managed control plane from AWS. It allows us to avoid worrying about anything other than the Worker Nodes.
+
+We have several options for creating eks clusters:
+https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html
+- using eksctl
+- using AWS management console
+- AWS cli command to create a cluster
