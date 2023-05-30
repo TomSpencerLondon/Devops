@@ -2239,3 +2239,98 @@ https://www.coachdevops.com/2022/08/jenkins-build-agent-setup-using-docker.html
 - Customized agents as it can run different builds like Java 8, Java 11
 - Scalability 
 
+### DevOps Interview Preparation - Interview Questions, Useful Tips and Guide
+
+#### How can you become a successful DevOps engineer?
+https://www.coachdevops.com/2021/02/top-devops-skills-for-2021-skills.html
+
+#### Top DevOps skills for 2023
+1. Any cloud knowledge and experience - AWS, Azure and Google cloud
+2. Linux knowledge and scripting - basic troubleshooting, intermediate scripting, looking at the logs
+3. Experience in Git, GitHub, Bitbucket or any version control systems such as SVN, TFVC
+4. Experience in Continuous integrations tools such as Jenkins, TeamCity, Circle CI
+5. Experience in Infrastructure automation tools such as Terraform, AWS cloud formation
+6. Experience in Configuration Management tools such as Ansible, Puppet or Chef
+7. Experience in containers such as Docker and Kubernetes
+8. Experience in basic to intermediate Scripting. Advanced scripting needed for Sr.Devops folks.
+9. Ability to troubleshoot in case builds, deployments failure.
+
+#### Soft skills
+These days employers are not only looking for strong technical skills but also looking "soft skills" which are essentials to become successful in IT. If you think if you are lagging on any of these skills, no worries. All these skills can be developed and improved over period of time by practicing.
+1. Open minded
+2. Willingness to learn new skills
+3. Communication
+4. Approachable
+5. "Get it done" attitude
+6. Being adaptable
+
+#### Top 10 DevOps tools you should focus to prepare your DevOps Career on a faster track:
+
+https://www.cidevops.com/2020/04/top-10-devops-popular-tools-popular.html
+
+Here are the top 10 DevOps Tools to focus on to put your DevOps learning in fast-track and kick start your career quickly as a Cloud or DevOps engineer in about 8 weeks from now.
+
+1.    Terraform # 1 Infrastructure automation tool
+2.    Git – BitBucket/GitHub/Azure Git - # 1 - SCM tool
+3.    Jenkins - Create CICD Pipelines - scripted, declarative - # 1 CI tool
+4.    Ansible- # 1 Configuration Management tool
+5.    Docker- # 1 Container platform
+6.    Kubernetes # 1 container orchestration tool
+7.    Azure DevOps, Pipelines – provides platform for migrating applications to Azure Cloud
+8.    SonarQube – # 1 Code quality tool
+9.    Slack – # 1 Collaboration tool
+10.  Nexus – # 2 Binary repo manager
+
+
+#### DevOps Interview Questions Part - I
+http://www.coachdevops.com/2018/03/devops-interview-questions.html
+
+#### DevOps Interview Questions Part - II
+https://www.coachdevops.com/2018/04/devops-interview-questions-part-2.html
+
+#### DevOps Interview Questions Part - III
+https://www.coachdevops.com/2018/07/popular-devops-interview-questions-top.html
+
+#### Docker Interview Questoins
+https://www.coachdevops.com/2019/10/docker-interview-questions-popular.html
+
+### DevOps Interview Tips
+https://www.coachdevops.com/2019/07/tips-for-attending-devops-interviews.html
+
+### What questions to ask after the interview is done
+https://www.coachdevops.com/2019/01/questions-to-ask-after-you-are-done.html
+
+### TODO checklist after the course is done
+https://www.coachdevops.com/2018/07/todo-checklist-after-finishing-devops.html
+
+### What is Kubernetes?
+- Based on client server model:
+  - server - control plane
+  - clients - worker nodes
+
+#### What problems does Kubernetes solve?
+- microservices (no more monolithic)
+- increased use of containers
+- increased demand for managing those containers in a proper way
+- Tool to manage containers life cycle
+
+#### What features Kubernetes offers?
+- High availability or no downtime (huge demand for website - highly available - no downtime)
+  - Delete worker node - another one is spun up
+- Scalability or high performance
+  - set up for increasing pods when more demand required
+- Disaster recovery - Backup and restore
+  - one pod goes down -> pod will be deleted and another pod will be run
+- Load balancing
+  - traffic and routing traffic - spreading across multiple routes
+  - route traffic to available pods
+
+### Popular container orchestration platforms
+- EKS - Amazon Elastic Kubernetes Service
+- AKS - Azure Kubernetes Service
+- GKE - Google Kubernetes Engine
+- RedHat - Openshift
+- Nomad by Hashicorp
+- Apache Mesos
+- Docker Swarm - cloud native of Docker (run only docker containers)
+
