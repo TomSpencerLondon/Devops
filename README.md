@@ -2143,4 +2143,99 @@ This link is useful for setting up ansible automation for provisioning a new EC2
 https://www.coachdevops.com/2022/12/automate-ec2-provisioning-in-aws-using.html
 
 
+#### Lab 34- Kubernetes Labs - Deploy Springboot Microservices App into EKS Cluster using Jenkins Pipeline and Helm
+
+In this lab we will work to deploy Springboot Microservices app into EKS cluster using Jenkins pipeline and Helm.
+This link is useful for this challenge:
+https://www.coachdevops.com/2023/05/how-to-deploy-springboot-microservices_13.html
+
+#### What is Helm?
+Helm is a package manager for Kubernetes. Helm is the K8s equivalent of yum or apt. 
+It accomplishes the same goals as Linux system package managers like APT or YUM: 
+managing the installation of applications and dependencies behind the scenes and hiding the 
+complexity from the user. This link is useful for Helm:
+https://www.coachdevops.com/2021/03/install-helm-3-linux-setup-helm-3-on.html
+
+
+#### Sample springboot App Code:
+
+For this lab we will use this Spring application:
+https://github.com/TomSpencerLondon/docker-spring-boot
+
+Our Jenkins pipeline will:
+- Automate maven build(jar) using Jenkins
+- Automate Docker image creation
+- Automate Docker image upload into Elastic container registry(ECR)
+- Automate Springboot docker container deployments into Elastic Kubernetes Cluster using Helm charts
+
+![Screenshot 2023-05-13 at 8 09 11 AM](https://github.com/TomSpencerLondon/docker-spring-boot/assets/27693622/cfa1867a-7765-40df-9922-05284f4b808f)
+
+Pre-requisites:
+1. EKS cluster needs to be up running. This link is useful for deploying a kubernetes cluster:
+https://www.coachdevops.com/2022/02/create-amazon-eks-cluster-by-eksctl-how.html
+2. Jenkins instance is up and running
+3. Install AWS CLI on Jenkins instance
+4. Helm installed on Jenkins instance
+5. Install Kubectl on Jenkins instance
+6. Install eksctl on Jenkins instance
+7. Install Docker in Jenkins and Jenkins have proper permission to perform Docker builds
+8. We should also install Docker and Docker pipeline on Jenkins:
+![docker-plugins](https://github.com/TomSpencerLondon/docker-spring-boot/assets/27693622/82bdc1b1-f29f-4848-909e-612965f062d5)
+
+9. Create ECR repo in AWS
+10. Dockerfile created along with the application source code for springboot App.
+11. Namespace created in EKS cluster
+
+### Lab 35 - Create Azure DevOps & Azure account for Azure Cloud Labs
+For this lab we will start working with azure Cloud We will learn how to migrate applications into Azure Cloud using Azure DevOps.
+
+#### What is Azure Devops
+This link is useful for more information about Azure DevOps:
+https://www.coachdevops.com/2019/02/azure-devops-tutorial-learn-azure.html
+Azure DevOps (previously known as VSTS) is Microsoft's cloud based offering for any technology stack, 
+any platform to turn idea into a product. 
+We can migrate any applications into Azure by building pipelines in Azure Devops. 
+These are the services provided by Azure Devops.
+
+![introducing-azure-devops](https://github.com/TomSpencerLondon/docker-spring-boot/assets/27693622/843b8002-aedd-4855-bf47-73a56bebfb93)
+
+1. Azure Boards
+   We can quickly and easily start tracking tasks, features, and bugs associated with our project. We do this by adding one of three work item types—epics, issues, and tasks—that the Basic process provides. 
+As works progresses from not started to completed, we update the State workflow field from To Do, Doing, and Done.
+
+2. Azure Repos
+   We can create free public, private git repositories and collaborate by creating pull requests, code reviews.
+
+3. Azure Pipelines
+   Azure Pipelines help us implement a build, test, and deployment pipeline for any app.
+   We can either use YAML to define your pipelines or use the visual designer to do the same.
+
+4. Azure Test Plans
+   We can test your application code by writing test cases. We can create and run manual test plans, generate automated tests and collect feedback from users.
+
+5. Azure Artifacts
+   Azure Artifacts provides an easy way to share our artifacts across our entire team or company. By storing our artifacts in a private repository within Azure Artifacts, our team can quickly download or update them.
+
+| VSTS feature name | Azure DevOps service name | Description                                                                                                |
+| ----------------- | ------------------------- |------------------------------------------------------------------------------------------------------------|
+| Build & release | Azure Pipelines | 	Continuous integration and continuous delivery (CI/CD) that works with any language, platform, and cloud. |
+| Code | Azure Repos | Unlimited cloud-hosted private Git and Team Foundation Version Control (TFVC) repos for projects.          | 
+| Work | Azure Boards | 	Work tracking with Kanban boards, backlogs, team dashboards, and custom reporting. |
+| Test | Azure Test Plans | All-in-one planned and exploratory testing solution. |
+| Packages (extension) | Azure Artifacts | Maven, npm, and NuGet package feeds from public and private sources. |
+
+### Bonus Lab 7 - How to setup Dynamic(On demand) Jenkins Slaves (build agents) using Docker Containers
+
+In this lab we will set up dynamic Jenkins slaves (build agents) using Docker.
+The slave (build agent) helps Jenkins to acheive distributed builds. In this lab we will learn how to create slaves on demand.
+This link is useful for setting up docker containers as build agents:
+https://www.coachdevops.com/2022/08/jenkins-build-agent-setup-using-docker.html
+
+![Screen Shot 2022-08-15 at 11 35 54 AM](https://github.com/TomSpencerLondon/docker-spring-boot/assets/27693622/841a3565-7112-4277-b240-e59deb7a9100)
+
+### Advantages of using Docker Containers as Jenkins Build Agents
+- Ephemeral
+- Better resource utilization
+- Customized agents as it can run different builds like Java 8, Java 11
+- Scalability 
 
