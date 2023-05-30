@@ -2134,3 +2134,13 @@ version.BuildInfo{Version:"v3.12.0", GitCommit:"c9f554d75773799f72ceef38c51210f1
 After configuration, we can see our graphana dashboard:
 ![image](https://github.com/TomSpencerLondon/myPythonDockerRepo/assets/27693622/9e882a07-1cd9-4c59-889e-ffeca9e5005a)
 
+
+### Bonus Lab 06 - Ansible Infrastructure Automation - Provision new EC2 instance creation
+
+![Screen Shot 2022-12-31 at 8 56 16 AM](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/2894175c-017a-4d6f-a8d3-c5015b0ea400)
+
+This link is useful for setting up ansible automation for provisioning a new EC2 instance:
+https://www.coachdevops.com/2022/12/automate-ec2-provisioning-in-aws-using.html
+
+
+
