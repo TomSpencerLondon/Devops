@@ -2367,3 +2367,24 @@ This link is useful for the steps to migrate an existing Java WebApp (MyWebApp) 
 
 https://www.coachdevops.com/2022/04/create-azure-pipeline-using-yaml-create.html
 
+### Lab 38 - Azure CICD - How to migrate Java App from BitBucket to Azure Cloud using Azure Pipelines
+
+This link is useful for migrating existing Java WebApp (MyWebApp) that you have set up in Bitbucket into Azure Cloud:
+https://www.coachdevops.com/2020/08/how-to-migrate-apps-from-bitbucket-to.html
+
+### Lab 39 - Azure Hands on Lab - Slack Integration with Azure DevOps Pipelines
+In this lab we integrate Slack(sending push notifications to Slack channels) after every Build in Azure DevOps:
+Slack/AzureDevOps Integration
+https://www.cidevops.com/2019/01/how-to-integrate-slack-with-vsts-azure.html
+
+
+### Lab 40 - Azure Hands on - Create Ubuntu 20.0.4 VM in Azure Cloud
+
+In this lab we create an Ubuntu 20.0.4 Virtual Machine(server) in Azure Cloud.
+
+Install Java and Maven on this VM to create Java Project to setup in Azure Repos
+
+https://www.coachdevops.com/2023/04/how-to-create-ubuntu-2004-virtual.html
+
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/8a2c6d62-b313-4406-9897-9c8a69ae9599)
+
