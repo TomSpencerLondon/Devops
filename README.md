@@ -2388,3 +2388,42 @@ https://www.coachdevops.com/2023/04/how-to-create-ubuntu-2004-virtual.html
 
 ![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/8a2c6d62-b313-4406-9897-9c8a69ae9599)
 
+
+### Lab 40 - Azure Labs - SonarQube Setup on Azure VM and Integration with Azure DevOps
+
+SonarQube is a static code quality/analysis tool which will scan application source code and find defects/issues in the code.
+
+SonarQube Setup on Azure VM (New Article!)
+https://www.coachdevops.com/2023/02/how-to-setup-sonarqube-on-vm-in-azure.html
+Please find below the steps for integrating SonarQube with Azure DevOps and Perform Code Analysis in Azure Pipelines:
+
+SonarQube/Azure DevOps Integration(new link!)
+https://www.coachdevops.com/2023/02/how-to-integrate-sonarqube-with-azure.html
+
+![image](https://github.com/TomSpencerLondon/MyApplicationRepo/assets/27693622/4490991f-eb8b-4537-93f4-887a5b4c6133)
+
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/8a2c6d62-b313-4406-9897-9c8a69ae9599)
+
+### Lab 41 - Azure Hands on - Create Ubuntu 20.0.4 VM in Azure Cloud
+
+In this lab we will create an Ubuntu 20.0.4 Virtual Machine(server) in Azure Cloud.
+
+Install Java and Maven on this VM to create Java Project to setup in Azure Repos
+
+https://www.coachdevops.com/2023/04/how-to-create-ubuntu-2004-virtual.html
+
+### Lab 42 - Azure Labs - How to Create Docker images and Upload into Azure Container Registry (ACR)
+This link is useful for installing docker:
+https://www.coachdevops.com/2019/05/install-docker-ubuntu-how-to-install.html
+
+We will now look at the steps for creating docker images and hosting Docker images in Azure Container Registry.
+https://www.coachdevops.com/2019/12/how-to-upload-docker-images-to-azure.html
+
+![image](https://github.com/TomSpencerLondon/MyApplicationRepo/assets/27693622/b45ca919-8962-46ee-a964-5649fd9662a4)
+
+### Lab 43 - Azure Labs on IAC- Create Azure WebApp (App Service) using Terraform
+
+In this lab we automate Azure WebApp Creation using Terraform scripts and Azure CLI.
+
+Link is below:
+https://www.cidevops.com/2023/02/how-to-create-azure-resources-using.html
