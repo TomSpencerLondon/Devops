@@ -2334,3 +2334,36 @@ https://www.coachdevops.com/2018/07/todo-checklist-after-finishing-devops.html
 - Apache Mesos
 - Docker Swarm - cloud native of Docker (run only docker containers)
 
+### Kubernetes Basic Architecture
+- Kubernetes is formed by a cluster of servers called nodes - master and worker
+- cluster should have at least one master node and couple of worker nodes, each node has kubelet running on it
+- worker node does the actual work where it runs docker containers of different applications
+- Kubelet is a kubernetes process that makes all cluster nodes communicate with one another
+
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/77cc0bb3-0409-4158-a6db-432a1bf0cddf)
+
+### How to interact with a Kubernetes cluster?
+- Kubectl - command line tool for accessing Kubernetes cluster
+  - configuration file ~/.kube/config - information for finding and accessing a cluster
+- Dashboard UI - directly using the browser (not recommended)
+- Direct access to API using like curl command
+- Helm Charts - Deploy Microservices
+- Rancher - UI tool for accesssing K8s cluster
+
+### Lab 36 - Azure CICD - How to Migrate existing MyWebApp from GitHub to Azure Cloud
+
+We will now look at migrating existing Java Applications(MyWebApp) that we had set up in GitHub to Azure Cloud using Azure Pipelines.
+
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/dfdeb753-8633-402d-b734-13619f864222)
+
+
+This is my devops project:
+![image](https://github.com/TomSpencerLondon/LeetCode/assets/27693622/d4abb69d-6732-4588-9d8c-183d8bfe716c)
+
+
+### Lab 37 - Azure Labs - Pipeline as a Code(YAML) - How to migrate Java App from GitHub to Azure Cloud using Azure YAML Pipelines
+
+This link is useful for the steps to migrate an existing Java WebApp (MyWebApp) that you have set up in GitHub into Azure Cloud using Azure YAML pipelines:
+
+https://www.coachdevops.com/2022/04/create-azure-pipeline-using-yaml-create.html
+
