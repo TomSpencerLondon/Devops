@@ -2427,3 +2427,9 @@ In this lab we automate Azure WebApp Creation using Terraform scripts and Azure 
 
 Link is below:
 https://www.cidevops.com/2023/02/how-to-create-azure-resources-using.html
+
+### Devops coach - 13 June
+- Rancher is a good tool for Kubernetes which Annanth will do a video about: https://www.rancher.com/
+
+![image](https://github.com/TomSpencerLondon/ddd-starter-modelling/assets/27693622/1463cecc-e853-4d3d-ba17-0783ea72e11c)
+
